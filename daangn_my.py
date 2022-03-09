@@ -67,7 +67,7 @@ for i in search:
 
     driver.find_element(By.ID, 'header-search-button').click()
 
-    for k in range(500):  # 매물 100개 크롤링
+    for k in range(100):  # 매물 100개 크롤링
 
         # 선택할 매물 경로 설정
         xpathhead = '//*[@id="flea-market-wrap"]/article['
@@ -188,7 +188,7 @@ for i in search:
 
     driver.back()
     driver.find_element(By.ID, "header-search-input").clear()   #검색창 비우기
-write_wb.save('당근마켓_t7.xlsx')
+write_wb.save('당근마켓_t1.xlsx')
 
 # 브라우저 종료
 driver.quit()
