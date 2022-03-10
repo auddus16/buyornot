@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait as wait
 import datetime as dt
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, UnexpectedAlertPresentException
+import re
 
 url = 'https://m.bunjang.co.kr/'
 # openApi페이지 클릭
@@ -77,11 +78,18 @@ for i in search:
     # driver.find_element()
 
     driver.find_element_by_xpath("//*[@class='sc-kEYyzF gfWKdx']").click()
-    driver.find_element_by_xpath("//*[@class='sc-ecaExY iRJhdC']/a[1]").click()
 
+    # 스마트폰 필터 선택
+    # driver.find_element_by_xpath("//*[@class='sc-ecaExY iRJhdC']/a[1]").click()
 
-    for k in range(30):  # 매물 100개 크롤링
+    # 최신순
+    # driver.find_element_by_xpath("//*[@class='sc-iIHSe eSBGxA']/a[2]").click()
 
+    count=0
+    k=0
+    while True:  # 매물 100개 크롤링
+        if count >= 150:
+            break
         # 선택할 매물 경로 설정
         xpathhead = '//*[@class="sc-eopZyb cXHRlj"]/div['
         xpathmiddle = str(k + 1)
@@ -95,8 +103,10 @@ for i in search:
         # 매물상세페이지로 이동
         #wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
         driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
-
+        count+=1
+        k += 1
         flag = True
+
         # 가져온 데이터를 각 변수에 저장
         title = driver.find_element_by_xpath("//*[@class='sc-iFUGim igvOwa']").text  # 제목
 
@@ -126,7 +136,7 @@ for i in search:
 
         # 가격
         price = driver.find_element(By.XPATH, '//*[@class="sc-cNQqM hSmYTm"]/div[1]').text  # 가격
-        if price == '가격없음' or price == '나눔':
+        if price == '가격없음' or price == '나눔' or re.search('\d', price)==None:
             price= 0
         else:
             price = int(price[:-1].replace(',', ''))
@@ -170,7 +180,7 @@ for i in search:
             #     WebDriverWait(driver, 20).until(
             #         EC.presence_of_element_located((By.ID, 'flea-market-wrap')))
 
-            if (k + 1) % 100 == 0:
+            if count % 100 == 0:
                 page += 1
                 if page % 11 == 1:
                     driver.find_element_by_xpath("//*[@class='sc-drlKqa zHqrz']/a[12]").click()
@@ -190,7 +200,7 @@ for i in search:
                 condition=True
 
         # print(device + '/' + title + '/' + region)
-        print(str(k+1) + "/" + str(date) + "/" + region)
+        print(str(k) + " " + title + "/" + "/" + str(date) + "/" + region)
 
         write_ws.cell(row, 1, '번개장터')
         write_ws.cell(row, 2, '애플')
@@ -201,6 +211,7 @@ for i in search:
         # write_ws.cell(row, 7, device)
         # write_ws.cell(row, 8, memory)
 
+
         # 뒤로가기
         driver.back()
 
@@ -210,7 +221,7 @@ for i in search:
         # 페이지 이동하기
         page_bar = driver.find_elements_by_xpath("//*[@class='sc-drlKqa zHqrz']")
 
-        if (k+1) % 100 == 0:
+        if count % 100 == 0:
             page += 1
             if page % 11 == 1:
                 driver.find_element_by_xpath("//*[@class='sc-drlKqa zHqrz']/a[12]").click()
@@ -220,10 +231,13 @@ for i in search:
             #
             WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
+            print("다음페이지로 이동!")
+            k=0
 
     driver.back()
     driver.find_element_by_xpath("//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
-write_wb.save('번개장터_t1.xlsx')
+
+write_wb.save('번개장터_t4.xlsx')
 
 # 브라우저 종료
 driver.quit()
