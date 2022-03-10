@@ -92,7 +92,7 @@ while(cnt < 100): # 매물 100개 크롤링
             EC.presence_of_element_located((By.ID, 'flea-market-wrap')))
         print("더보기 로드 완료")
 
-write_wb.save('당근마켓_t1.xlsx')
+write_wb.save('당근마켓_t2.xlsx')
 
 # 브라우저 종료
 driver.quit()
