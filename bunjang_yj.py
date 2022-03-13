@@ -249,4 +249,4 @@ def crawling_bunjang():
     # 브라우저 종료
     driver.quit()
 
-crawling_bunjang()
+# crawling_bunjang()
