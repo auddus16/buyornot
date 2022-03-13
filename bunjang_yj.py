@@ -13,81 +13,73 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, UnexpectedAlertPresentException
 import re
 
-url = 'https://m.bunjang.co.kr/'
-# openApi페이지 클릭
-write_wb = Workbook();
-write_ws = write_wb.active
+def crawling_bunjang():
+    url = 'https://m.bunjang.co.kr/'
+    # openApi페이지 클릭
+    write_wb = Workbook();
+    write_ws = write_wb.active
 
-# 엑셀 파일 첫째 줄 입력 -> 칼럼명 정의하기
-write_ws.cell(1, 1, '데이터 출처')
-write_ws.cell(1, 2, '회사명')
-write_ws.cell(1, 3, '업로드 일시')
-write_ws.cell(1, 4, '매물 지역')
-write_ws.cell(1, 5, '가격')
-write_ws.cell(1, 6, '제품 상태')
-write_ws.cell(1, 7, '기종')
-write_ws.cell(1, 8, '메모리')
+    # 엑셀 파일 첫째 줄 입력 -> 칼럼명 정의하기
+    write_ws.cell(1, 1, '데이터 출처')
+    write_ws.cell(1, 2, '회사명')
+    write_ws.cell(1, 3, '업로드 일시')
+    write_ws.cell(1, 4, '매물 지역')
+    write_ws.cell(1, 5, '가격')
+    write_ws.cell(1, 6, '제품 상태')
+    write_ws.cell(1, 7, '기종')
+    write_ws.cell(1, 8, '메모리')
 
-# header랑 option이  있어야 크롤러를 봇으로 인식을 안함
-header = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)\
-    			AppleWebKit 537.36 (KHTML, like Gecko) Chrome",
-          "Accept": "text/html,application/xhtml+xml,application/xml;\
-    			q=0.9,imgwebp,*/*;q=0.8"}
-options = webdriver.ChromeOptions()
-# options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-options.add_argument("user-agent=Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko")
-driver = webdriver.Chrome(executable_path='chromedriver', options=options)
+    # header랑 option이  있어야 크롤러를 봇으로 인식을 안함
+    header = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)\
+                    AppleWebKit 537.36 (KHTML, like Gecko) Chrome",
+              "Accept": "text/html,application/xhtml+xml,application/xml;\
+                    q=0.9,imgwebp,*/*;q=0.8"}
+    options = webdriver.ChromeOptions()
+    # options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko")
+    driver = webdriver.Chrome(executable_path='chromedriver', options=options)
 
-driver.maximize_window()  # 모바일과 웹 뷰에서 위치가 달라질 수 있어서 maximize 하고 진행
-driver.get(url)  # 브라우저 실행 or 재실행 (재실행 시 위치 초기화 필요) 67 line에서 진행
-driver.implicitly_wait(10)
-#    driver.find_element(By.XPATH, '//*[@id="serviceGroups"]/li[2]/button').click()  # 카테고리 클릭
+    driver.maximize_window()  # 모바일과 웹 뷰에서 위치가 달라질 수 있어서 maximize 하고 진행
+    driver.get(url)  # 브라우저 실행 or 재실행 (재실행 시 위치 초기화 필요) 67 line에서 진행
+    driver.implicitly_wait(10)
+    #    driver.find_element(By.XPATH, '//*[@id="serviceGroups"]/li[2]/button').click()  # 카테고리 클릭
 
-#    select = Select(driver.find_element(By.XPATH, '//*[@id="sortColByCheck"]'))
-#    select.select_by_visible_text('제목순')
+    #    select = Select(driver.find_element(By.XPATH, '//*[@id="sortColByCheck"]'))
+    #    select.select_by_visible_text('제목순')
 
-#driver.find_element(By.XPATH, '//*[@class="flea-market-article-link"]').click()
+    #driver.find_element(By.XPATH, '//*[@class="flea-market-article-link"]').click()
 
-search=['아이폰']
-removeList=['케이스', 'case', '필름', '보호필름', '강화유리', '방탄', '충전기', '케이블', '충전케이블', '강화', '유리', '그립톡',
-            '교환', '바꾸', '바꿀', '바꿔', '구해', '삽니다', '사요', '원해요', '원함', '구함', '사봅니다', '구합', '삼', '교신', '구매']
-newProductList=['미개봉', '미사용', '새상품', '사용안함']
-memoryList=['64', '128', '256', '512']
+    search=['아이폰']
+    removeList=['케이스', 'case', '필름', '보호필름', '강화유리', '방탄', '충전기', '케이블', '충전케이블', '강화', '유리', '그립톡',
+                '교환', '바꾸', '바꿀', '바꿔', '구해', '삽니다', '사요', '원해요', '원함', '구함', '사봅니다', '구합', '삼', '교신', '구매']
+    newProductList=['미개봉', '미사용', '새상품', '사용안함']
+    memoryList=['64', '128', '256', '512']
 
-deviceList=[['Xs', 'xs', 'XS', 'xS'], ['Xr', 'xr', 'XR', 'xR'], ['11'], ['12'], ['13'], ['Se', 'se', 'SE', 'sE'], ['Pro', 'pro', '프로', 'PRO'], ['Max', 'max', '맥스', 'MAX'], ['Mini', 'mini', '미니', 'MINI']]
+    deviceList=[['Xs', 'xs', 'XS', 'xS'], ['Xr', 'xr', 'XR', 'xR'], ['11'], ['12'], ['13'], ['Se', 'se', 'SE', 'sE'], ['Pro', 'pro', '프로', 'PRO'], ['Max', 'max', '맥스', 'MAX'], ['Mini', 'mini', '미니', 'MINI']]
 
-cnt= 0  # 매물 개수
-row= 2  # 엑셀 row
+    cnt= 0  # 매물 개수
+    row= 2  # 엑셀 row
+    page = 1    # 현재 페이지
 
-page = 1
-
-for i in search:
-    # driver.find_element(By.ID, "header-search-input").click()
-    # element= driver.find_element(By.ID, 'header-search-input')
-    # element.send_keys(i)
-
-    # driver.find_element(By.CLASS_NAME, 'sc-hMqMXs cLfdog').click()
-    # print(driver.find_elements_by_xpath("//*[@class='sc-hMqMXs cLfdog']"))
-    driver.find_elements_by_xpath("//*[@class='sc-hMqMXs cLfdog']")[0].click()
+    driver.find_element(By.XPATH, "//*[@class='sc-hMqMXs cLfdog']").click()
     # element = driver.find_element(By.CLASS_NAME, 'sc-hMqMXs cLfdog')
-    element = driver.find_elements_by_xpath("//*[@class='sc-hMqMXs cLfdog']")[0]
-    element.send_keys(i)
+    element = driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']")
+    element.send_keys(search[0])
 
     # driver.find_element()
 
-    driver.find_element_by_xpath("//*[@class='sc-kEYyzF gfWKdx']").click()
+    driver.find_element(By.XPATH,"//*[@class='sc-kEYyzF gfWKdx']").click()
 
     # 스마트폰 필터 선택
     # driver.find_element_by_xpath("//*[@class='sc-ecaExY iRJhdC']/a[1]").click()
 
     # 최신순
     # driver.find_element_by_xpath("//*[@class='sc-iIHSe eSBGxA']/a[2]").click()
-
     count=0
     k=0
-    while True:  # 매물 100개 크롤링
+    while True:
         if count >= 150:
             break
         # 선택할 매물 경로 설정
@@ -97,81 +89,112 @@ for i in search:
         xpath = xpathhead + xpathmiddle + xpathtail
 
         #지역
-        region = driver.find_element(By.XPATH, xpath+'/div[3]').text
-        region= region.split()[0]
+        try:
+            region = driver.find_element(By.XPATH, xpath+'/div[3]').text
+            region= region.split()[0]
+            if '특별시' in region or '광역시' in region:
+                region = region.strip('특별시')
+                region = region.strip('광역시')
+            elif '세종' in region:
+                region = '세종시'
+            elif '충청남도' in region:
+                region = '충남'
+            elif '충청북도' in region:
+                region = '충북'
+            elif '전라북도' in region:
+                region = '전북'
+            elif '전라남도' in region:
+                region = '전남'
+            elif '경상북도' in region:
+                region = '경북'
+            elif '경상남도' in region:
+                region = '경남'
+        except:
+            region = '전국'
+
 
         # 매물상세페이지로 이동
         #wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
-        driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
+        try:
+            driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
+        except NoSuchElementException:
+            print("NoSuchElementException 예외처리")
+            continue
+
         count+=1
         k += 1
         flag = True
 
-        # 가져온 데이터를 각 변수에 저장
-        title = driver.find_element_by_xpath("//*[@class='sc-iFUGim igvOwa']").text  # 제목
+        try:
+            # 가져온 데이터를 각 변수에 저장
+            title = driver.find_element(By.XPATH,"//*[@class='sc-iFUGim igvOwa']").text  # 제목
 
-        content = driver.find_element_by_xpath("//*[@class='sc-dOkuiw bphZvH']").text  # 내용
+            content = driver.find_element(By.XPATH,"//*[@class='sc-dOkuiw bphZvH']").text  # 내용
 
-        # 날짜 계산
-        current_time= dt.datetime.now().date()
-        date = driver.find_element(By.XPATH, "//*[@class='sc-cNnxps QBKRV']/div[3]").text  # 날짜
-        # if date[0]=='끌':
-        #     date= date[2:]
-        if '초' in date:
-            t = int(date.rstrip('초 전'))
-            date = current_time
-        elif '분' in date:
-            t= int(date.rstrip('분 전'))
-            date= current_time - dt.timedelta(minutes=t)
-        elif '시간' in date:
-            t = int(date.rstrip('시간 전'))
-            date = current_time - dt.timedelta(hours=t)
-        elif '일' in date:
-            t = int(date.rstrip('일 전'))
-            date = current_time - dt.timedelta(days=t)
-        elif '주' in date:
-            t = int(date.rstrip('주 전'))
-            t *= 7
-            date = current_time - dt.timedelta(days=t)
+            # 날짜 계산
+            current_time= dt.datetime.now().date()
+            date = driver.find_element(By.XPATH, "//*[@class='sc-cNnxps QBKRV']/div[3]").text  # 날짜
 
-        # 가격
-        price = driver.find_element(By.XPATH, '//*[@class="sc-cNQqM hSmYTm"]/div[1]').text  # 가격
-        if price == '가격없음' or price == '나눔' or re.search('\d', price)==None:
-            price= 0
-        else:
-            price = int(price[:-1].replace(',', ''))
+            if '초' in date:
+                t = int(date.rstrip('초 전'))
+                date = current_time
+            elif '분' in date:
+                t= int(date.rstrip('분 전'))
+                date= current_time - dt.timedelta(minutes=t)
+            elif '시간' in date:
+                t = int(date.rstrip('시간 전'))
+                date = current_time - dt.timedelta(hours=t)
+            elif '일' in date:
+                t = int(date.rstrip('일 전'))
+                date = current_time - dt.timedelta(days=t)
+            elif '주' in date:
+                t = int(date.rstrip('주 전'))
+                t *= 7
+                date = current_time - dt.timedelta(days=t)
 
-        # # 건너뛰기
-        # # 제목에 케이스, 필름 들어간 거 건너뛰기
-        # for j in removeList:
-        #     if j in title: # 케이스, 필름
-        #         flag= False
-        #
-        # # 가격 범위
-        # if price <= 70000 or price >= 2000000:
-        #     flag= False
-        #
-        # # 메모리 정의
-        # memory = '없음'
-        # for j in memoryList:
-        #     if j in title or j in content:
-        #         memory = j + 'GB'
-        #
-        # # 기종 정의
-        # if '128' in title:
-        #     title= title.replace('128', '')
-        # elif '512' in title:
-        #     title= title.replace('512', '')
-        #
-        # device = '아이폰'
-        # for r in deviceList:
-        #     for j in r:
-        #         if j in title:
-        #             device += r[0]
-        #             break
-        # if device == '아이폰':
-        #     flag = False
+            # 가격
+            price = driver.find_element(By.XPATH, '//*[@class="sc-cNQqM hSmYTm"]/div[1]').text  # 가격
+            if price == '가격없음' or price == '나눔' or re.search('\d', price)==None:
+                price= 0
+            else:
+                price = int(price[:-1].replace(',', ''))
 
+            # 건너뛰기
+            # 제목에 케이스, 필름 들어간 거 건너뛰기
+            for j in removeList:
+                if j in title: # 케이스, 필름
+                    flag= False
+
+            # 가격 범위
+            if price <= 70000 or price >= 2000000:
+                flag= False
+
+            # 메모리 정의
+            memory = '없음'
+            for j in memoryList:
+                if j in title or j in content:
+                    memory = j + 'GB'
+
+            # 기종 정의
+            if '128' in title:
+                title= title.replace('128', '')
+            elif '512' in title:
+                title= title.replace('512', '')
+
+            device = '아이폰'
+            for r in deviceList:
+                for j in r:
+                    if j in title:
+                        device += r[0]
+                        break
+            if device == '아이폰':
+                flag = False
+        except:
+            print('예외 발생! 어디선가 뭐가 없네요ㅜ 다음 매물로 이동')
+            driver.back()
+            continue
+
+        # 건너뛰어야하는 데이터는 처리
         if flag == False:
             driver.back()
             # if (k + 1) % 6 == 0:
@@ -183,14 +206,13 @@ for i in search:
             if count % 100 == 0:
                 page += 1
                 if page % 11 == 1:
-                    driver.find_element_by_xpath("//*[@class='sc-drlKqa zHqrz']/a[12]").click()
+                    driver.find_element(By.XPATH,"//*[@class='sc-drlKqa zHqrz']/a[12]").click()
                 else:
-                    driver.find_element_by_xpath('//a[text()=' + str(page) + ']').click()
+                    driver.find_element(By.XPATH,'//a[text()=' + str(page) + ']').click()
                 # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
                 #
                 WebDriverWait(driver, 20).until(
                     EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
-
             continue
 
         # 제품 상태 정의
@@ -200,7 +222,7 @@ for i in search:
                 condition=True
 
         # print(device + '/' + title + '/' + region)
-        print(str(k) + " " + title + "/" + "/" + str(date) + "/" + region)
+        print(str(k) + " " + title + "/" + str(date) + "/" + device + "/" + memory + "/" +region)
 
         write_ws.cell(row, 1, '번개장터')
         write_ws.cell(row, 2, '애플')
@@ -208,8 +230,8 @@ for i in search:
         write_ws.cell(row, 4, region)
         write_ws.cell(row, 5, price)
         write_ws.cell(row, 6, condition)
-        # write_ws.cell(row, 7, device)
-        # write_ws.cell(row, 8, memory)
+        write_ws.cell(row, 7, device)
+        write_ws.cell(row, 8, memory)
 
 
         # 뒤로가기
@@ -219,14 +241,14 @@ for i in search:
         row += 1
 
         # 페이지 이동하기
-        page_bar = driver.find_elements_by_xpath("//*[@class='sc-drlKqa zHqrz']")
+        page_bar = driver.find_element(By.XPATH,"//*[@class='sc-drlKqa zHqrz']")
 
         if count % 100 == 0:
             page += 1
             if page % 11 == 1:
-                driver.find_element_by_xpath("//*[@class='sc-drlKqa zHqrz']/a[12]").click()
+                driver.find_element(By.XPATH,"//*[@class='sc-drlKqa zHqrz']/a[12]").click()
             else:
-                driver.find_element_by_xpath('//a[text()=' + str(page) + ']').click()
+                driver.find_element(By.XPATH,'//a[text()=' + str(page) + ']').click()
             # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
             #
             WebDriverWait(driver, 20).until(
@@ -235,10 +257,10 @@ for i in search:
             k=0
 
     driver.back()
-    driver.find_element_by_xpath("//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
+    driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
 
-write_wb.save('번개장터_t4.xlsx')
+    write_wb.save('번개장터_t1.xlsx')
 
-# 브라우저 종료
-driver.quit()
+    # 브라우저 종료
+    driver.quit()
 
