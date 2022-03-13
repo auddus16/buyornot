@@ -68,17 +68,9 @@ for k in range(200):
 
     region = '전국'
 
-    try:
-        driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
-    except NoSuchElementException:  # 선택할 수 있는 매물이 없는 경우, 더보기 버튼 누르기->처음으로
-        print('예외 발생! 더보기 버튼 누르기')
-        wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'SearchList_moreButton__11RNU'))).click()
+    driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
 
-        WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'SearchList_listWrap__14Cu9 pd_h20')))
-        continue
 
-    # 불필요한 데이터 건너뛰기 위한 변수 정의 -> 전처리
     flag = True
 
     try:
@@ -88,10 +80,11 @@ for k in range(200):
 
         content = driver.find_element(By.XPATH, '//*[@class="pd_b30"]').text  # 내용
         print(content)
-        date = driver.find_element(By.XPATH, '//*[@class="ProductDetailComponent_etc__3Vh-z f14 c_gray mt10"]/p[1]"]').text  # 날짜
+        date = driver.find_element(By.XPATH, '//*[@id="root"]/div[1]/div[2]/div[2]/div/div/div/p[1]').text  # 날짜
         print(date)
-        price = driver.find_element(By.XPATH, '//*[@class="ProductDetailComponent_price__17OTs"]').text  # 가격
+        price = driver.find_element(By.XPATH, '//*[@id="root"]/div[1]/div[2]/div[2]/div/div/p/strong').text  # 가격
         print(price)
+        
         
     except:
         print('예외 발생! 어디선가 뭐가 없네요ㅜ 다음 매물로 이동')
@@ -100,11 +93,11 @@ for k in range(200):
 
     if flag == False:
         driver.back()
-        if (k + 1) % 11 == 0:
-            wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'SearchList_moreButton__11RNU'))).click()
+        if (k + 1) % 5 == 0:
+            wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div[1]/section/article/button'))).click()
 
             WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, 'SearchList_listWrap__14Cu9 pd_h20')))
+                EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[1]/section/article')))
         continue
 
     # 제품 상태 정의
@@ -130,11 +123,11 @@ for k in range(200):
     cnt += 1
     row += 1
 
-    if (k + 1) % 11 == 0:
-        wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'SearchList_moreButton__11RNU'))).click()
+    if (k + 1) % 5 == 0:
+        wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div[1]/section/article/button'))).click()
 
         WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'SearchList_listWrap__14Cu9 pd_h20')))
+            EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[1]/section/article')))
 
 # 데이터 엑셀에 저장
 write_wb.save('중고나라_t1.xlsx')
