@@ -57,7 +57,7 @@ cnt = 0  # 매물 개수
 row = 2  # 엑셀 row
 
 
-for k in range(200):
+for k in range(300):
     
 # 선택할 매물 경로 설정
     xpathhead = '//*[@class="SearchList_listWrap__14Cu9 pd_h20"]/div/div['
@@ -66,7 +66,7 @@ for k in range(200):
     xpath = xpathhead + xpathmiddle + xpathtail
     
 
-    region = '전국'
+    region = '지역없음'
 
     driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
 
@@ -76,21 +76,69 @@ for k in range(200):
     try:
         # 가져온 데이터를 각 변수에 저장
         title = driver.find_element(By.XPATH, '//*[@class="f18 ProductDetailComponent_title__20tny"]').text  # 제목
-        print (title)
-
         content = driver.find_element(By.XPATH, '//*[@class="pd_b30"]').text  # 내용
-        print(content)
         date = driver.find_element(By.XPATH, '//*[@id="root"]/div[1]/div[2]/div[2]/div/div/div/p[1]').text  # 날짜
-        print(date)
         price = driver.find_element(By.XPATH, '//*[@id="root"]/div[1]/div[2]/div[2]/div/div/p/strong').text  # 가격
-        print(price)
-        
+
+
+        # 날짜 계산
+        current_time = dt.datetime.now().date()
+
+        if '초' in date:
+            t = int(date.rstrip('초 전'))
+            date = current_time
+        elif '분' in date:
+            t= int(date.rstrip('분 전'))
+            date= current_time - dt.timedelta(minutes=t)
+        elif '시간' in date:
+            t = int(date.rstrip('시간 전'))
+            date = current_time - dt.timedelta(hours=t)
+        elif '일' in date:
+            t = int(date.rstrip('일 전'))
+            date = current_time - dt.timedelta(days=t)
+        elif '주' in date:
+            t = int(date.rstrip('주 전'))
+            t *= 7
+            date = current_time - dt.timedelta(days=t)
+
+        price = int(price[:-1].replace(',', ''))
+
+        # 제목에 케이스, 필름 들어간 거 건너뛰기
+        for j in removeList:
+            if j in title:  # 케이스, 필름
+                flag = False
+
+        # 가격 범위
+        if price <= 70000 or price >= 2000000:
+            flag = False
+
+        # 메모리 정의
+        memory = '없음'
+        for j in memoryList:
+            if j in title or j in content:
+                memory = j + 'GB'
+
+        # 기종 정의
+        if '128' in title:
+            title = title.replace('128', '')
+        elif '512' in title:
+            title = title.replace('512', '')
+
+        device = '아이폰'
+        for r in deviceList:
+            for j in r:
+                if j in title:
+                    device += r[0]
+                    break
+        if device == '아이폰':
+            flag = False               
         
     except:
         print('예외 발생! 어디선가 뭐가 없네요ㅜ 다음 매물로 이동')
         driver.back()
         continue
 
+    # 건너뛰어야하는 데이터는 처리
     if flag == False:
         driver.back()
         if (k + 1) % 5 == 0:
@@ -114,8 +162,8 @@ for k in range(200):
     write_ws.cell(row, 4, region)
     write_ws.cell(row, 5, price)
     write_ws.cell(row, 6, condition)
-    #write_ws.cell(row, 7, device)
-    #write_ws.cell(row, 8, memory)
+    write_ws.cell(row, 7, device)
+    write_ws.cell(row, 8, memory)
 
     # 뒤로가기
     driver.back()
