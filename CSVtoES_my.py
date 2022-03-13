@@ -15,12 +15,12 @@ j = 0
 #     pass
 # else:
 #     es.indices.create(index='daangn_index')
-file= pd.read_excel('당근마켓_t3.xlsx')
-file.to_csv('당근마켓_log1.csv')
+file= pd.read_excel('당근마켓_0313.xlsx')
+file.to_csv('당근마켓_0313.csv')
 
-with open('당근마켓_log1.csv', 'rt', encoding='UTF8', errors='ignore') as se:
-    reader = csv.reader(se)
-    helpers.bulk(es, reader, index='daangn-index')
+# with open('당근마켓_log1.csv', 'rt', encoding='UTF8', errors='ignore') as se:
+#     reader = csv.reader(se)
+#     helpers.bulk(es, reader, index='carrot_market')
 
 
 
