@@ -62,7 +62,7 @@ for k in range(200):
 # 선택할 매물 경로 설정
     xpathhead = '//*[@class="SearchList_listWrap__14Cu9 pd_h20"]/div/div['
     xpathmiddle = str(k + 1)
-    xpathtail = ']div/a'
+    xpathtail = ']/div/a'
     xpath = xpathhead + xpathmiddle + xpathtail
     
 
@@ -83,14 +83,15 @@ for k in range(200):
 
     try:
         # 가져온 데이터를 각 변수에 저장
-        title = driver.find_element(By.CLASS_NAME, 'f18 ProductDetailComponent_title__20tny').text  # 제목
+        title = driver.find_element(By.XPATH, '//*[@class="f18 ProductDetailComponent_title__20tny"]').text  # 제목
+        print (title)
 
-        content = driver.find_element(By.CLASS_NAME, 'pd_b30').text  # 내용
-
-        date = driver.find_element(By.XPATH, '//*[@class="ProductDetailComponent_etc__3Vh-z f14 c_gray mt10"]/p[1]').text  # 날짜
-
-        price = driver.find_element(By.CLASS_NAME, 'ProductDetailComponent_price__17OTs').text  # 가격
-
+        content = driver.find_element(By.XPATH, '//*[@class="pd_b30"]').text  # 내용
+        print(content)
+        date = driver.find_element(By.XPATH, '//*[@class="ProductDetailComponent_etc__3Vh-z f14 c_gray mt10"]/p[1]"]').text  # 날짜
+        print(date)
+        price = driver.find_element(By.XPATH, '//*[@class="ProductDetailComponent_price__17OTs"]').text  # 가격
+        print(price)
         
     except:
         print('예외 발생! 어디선가 뭐가 없네요ㅜ 다음 매물로 이동')
