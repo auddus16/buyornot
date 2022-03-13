@@ -114,6 +114,9 @@ def crawling_bunjang():
 
 
         # 매물상세페이지로 이동
+        count += 1
+        k += 1
+        flag = True
         #wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
         try:
             driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
@@ -121,9 +124,6 @@ def crawling_bunjang():
             print("NoSuchElementException 예외처리")
             continue
 
-        count+=1
-        k += 1
-        flag = True
 
         try:
             # 가져온 데이터를 각 변수에 저장
@@ -206,14 +206,16 @@ def crawling_bunjang():
             if count % 100 == 0:
                 page += 1
                 if page % 11 == 1:
-                    driver.find_element(By.XPATH,"//*[@class='sc-drlKqa zHqrz']/a[12]").click()
+                    driver.find_element(By.XPATH, "//*[@class='sc-drlKqa zHqrz']/a[12]").click()
                 else:
-                    driver.find_element(By.XPATH,'//a[text()=' + str(page) + ']').click()
+                    driver.find_element(By.XPATH, '//a[text()=' + str(page) + ']').click()
                 # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
                 #
                 WebDriverWait(driver, 20).until(
                     EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
-            continue
+                print("다음페이지로 이동!")
+                k = 0
+                continue
 
         # 제품 상태 정의
         condition= False
