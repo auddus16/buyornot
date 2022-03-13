@@ -65,7 +65,7 @@ def crawling_daangn():
 
     driver.find_element(By.ID, 'header-search-button').click()
 
-    for k in range(5000):  # 매물 100개 크롤링
+    for k in range(2000):  # 매물 100개 크롤링
 
         # 선택할 매물 경로 설정
         xpathhead = '//*[@id="flea-market-wrap"]/article['
