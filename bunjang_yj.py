@@ -88,6 +88,24 @@ def crawling_bunjang():
         xpathtail = ']/a'
         xpath = xpathhead + xpathmiddle + xpathtail
 
+        count += 1
+        k += 1
+        flag = True
+
+        # 현재 페이지 끝나면 다음 페이지로 이동
+        if count % 101 == 0:
+            page += 1
+            if page % 11 == 1:
+                driver.find_element(By.XPATH, "//*[@class='sc-drlKqa zHqrz']/a[12]").click()
+            else:
+                driver.find_element(By.XPATH, '//a[text()=' + str(page) + ']').click()
+            # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
+            #
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
+            print("다음페이지로 이동!")
+            k = 1
+
         #지역
         try:
             region = driver.find_element(By.XPATH, xpath+'/div[3]').text
@@ -114,10 +132,9 @@ def crawling_bunjang():
 
 
         # 매물상세페이지로 이동
-        count += 1
-        k += 1
-        flag = True
-        #wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
+        # count += 1
+        # k += 1
+        # flag = True
         try:
             driver.find_element(By.XPATH, xpath).send_keys(Keys.ENTER)
         except NoSuchElementException:
@@ -197,25 +214,7 @@ def crawling_bunjang():
         # 건너뛰어야하는 데이터는 처리
         if flag == False:
             driver.back()
-            # if (k + 1) % 6 == 0:
-            #     wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
-            #
-            #     WebDriverWait(driver, 20).until(
-            #         EC.presence_of_element_located((By.ID, 'flea-market-wrap')))
-
-            if count % 100 == 0:
-                page += 1
-                if page % 11 == 1:
-                    driver.find_element(By.XPATH, "//*[@class='sc-drlKqa zHqrz']/a[12]").click()
-                else:
-                    driver.find_element(By.XPATH, '//a[text()=' + str(page) + ']').click()
-                # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
-                #
-                WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
-                print("다음페이지로 이동!")
-                k = 0
-                continue
+            continue
 
         # 제품 상태 정의
         condition= False
@@ -223,7 +222,7 @@ def crawling_bunjang():
             if m in title or m in content:
                 condition=True
 
-        # print(device + '/' + title + '/' + region)
+
         print(str(k) + " " + title + "/" + str(date) + "/" + device + "/" + memory + "/" +region)
 
         write_ws.cell(row, 1, '번개장터')
@@ -235,34 +234,19 @@ def crawling_bunjang():
         write_ws.cell(row, 7, device)
         write_ws.cell(row, 8, memory)
 
-
         # 뒤로가기
         driver.back()
 
         cnt += 1
         row += 1
 
-        # 페이지 이동하기
-        page_bar = driver.find_element(By.XPATH,"//*[@class='sc-drlKqa zHqrz']")
 
-        if count % 100 == 0:
-            page += 1
-            if page % 11 == 1:
-                driver.find_element(By.XPATH,"//*[@class='sc-drlKqa zHqrz']/a[12]").click()
-            else:
-                driver.find_element(By.XPATH,'//a[text()=' + str(page) + ']').click()
-            # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
-            #
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
-            print("다음페이지로 이동!")
-            k=0
-
-    driver.back()
-    driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
+    # driver.back()
+    # driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
 
     write_wb.save('번개장터_t1.xlsx')
 
     # 브라우저 종료
     driver.quit()
 
+crawling_bunjang()
