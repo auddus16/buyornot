@@ -14,7 +14,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 url = 'https://m.joongna.com/search-list/product?cafeOrder=1&searchword=%EC%95%84%EC%9D%B4%ED%8F%B0&rid=HHaSE16CXCtuqLt'
 # openApi페이지 클릭
-write_wb = Workbook();
+write_wb = Workbook()
 write_ws = write_wb.active
 
 # 엑셀 파일 첫째 줄 입력 -> 칼럼명 정의하기
