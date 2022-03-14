@@ -178,7 +178,7 @@ for k in range(300):
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[1]/section/article')))
 
 # 데이터 엑셀에 저장
-write_wb.save('중고나라_t1.xlsx')
+write_wb.save('중고나라_220313.xlsx')
 
 # 브라우저 종료
 driver.quit()

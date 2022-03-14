@@ -65,7 +65,7 @@ def crawling_daangn():
 
     driver.find_element(By.ID, 'header-search-button').click()
 
-    for k in range(2000):  # 매물 100개 크롤링
+    for k in range(1000):  # 매물 100개 크롤링
 
         # 선택할 매물 경로 설정
         xpathhead = '//*[@id="flea-market-wrap"]/article['
@@ -111,7 +111,7 @@ def crawling_daangn():
 
             # 날짜 계산
             current_time = dt.datetime.now().date()
-            date = driver.find_element(By.TAG_NAME, 'time').text  # 날짜
+            date = driver.find_element(By.TAG_NAME, 'time').text # 날짜
             if date[0] == '끌':
                 date = date[2:]
             if '분' in date:
@@ -184,7 +184,7 @@ def crawling_daangn():
             if m in title or m in content:
                 condition = True
 
-        print(str(cnt) + '번. ' + device + '/' + title + '/' + region)
+        print(str(k+1)+"개 매물 열람중.."+str(cnt) + '번. ' + device + '/' + title + '/' + region)
 
         write_ws.cell(row, 1, '당근마켓')
         write_ws.cell(row, 2, '애플')
@@ -208,7 +208,7 @@ def crawling_daangn():
                 EC.presence_of_element_located((By.ID, 'flea-market-wrap')))
 
     # 데이터 엑셀에 저장
-    write_wb.save('당근마켓_t1.xlsx')
+    write_wb.save('/data/당근마켓_220314_2000.xlsx')
 
     # 브라우저 종료
     driver.quit()
