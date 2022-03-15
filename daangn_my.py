@@ -65,7 +65,7 @@ def crawling_daangn():
 
     driver.find_element(By.ID, 'header-search-button').click()
 
-    for k in range(1000):  # 매물 100개 크롤링
+    for k in range(3000):  # 매물 100개 크롤링
 
         # 선택할 매물 경로 설정
         xpathhead = '//*[@id="flea-market-wrap"]/article['
@@ -208,7 +208,8 @@ def crawling_daangn():
                 EC.presence_of_element_located((By.ID, 'flea-market-wrap')))
 
     # 데이터 엑셀에 저장
-    write_wb.save('/data/당근마켓_220314_2000.xlsx')
+    write_wb.save('당근마켓_220315_2200.xlsx')
+
 
     # 브라우저 종료
     driver.quit()
