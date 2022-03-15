@@ -11,6 +11,7 @@ import csv
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, UnexpectedAlertPresentException
 from sklearn.tree import DecisionTreeClassifier
+import time
 
 url = 'https://m.joongna.com/search-list/product?cafeOrder=1&searchword=%EC%95%84%EC%9D%B4%ED%8F%B0&rid=HHaSE16CXCtuqLt'
 # openApi페이지 클릭
@@ -41,7 +42,7 @@ driver = webdriver.Chrome(executable_path='chromedriver', options=options)
 
 driver.maximize_window()  # 모바일과 웹 뷰에서 위치가 달라질 수 있어서 maximize 하고 진행
 driver.get(url)  # 브라우저 실행 or 재실행 (재실행 시 위치 초기화 필요) 67 line에서 진행
-driver.implicitly_wait(10)
+driver.implicitly_wait(30)
 
 
 search = ['아이폰']
@@ -57,7 +58,8 @@ cnt = 0  # 매물 개수
 row = 2  # 엑셀 row
 
 
-for k in range(300):
+for k in range(330):
+    time.sleep(1)
     
 # 선택할 매물 경로 설정
     xpathhead = '//*[@class="SearchList_listWrap__14Cu9 pd_h20"]/div/div['
@@ -141,7 +143,7 @@ for k in range(300):
     # 건너뛰어야하는 데이터는 처리
     if flag == False:
         driver.back()
-        if (k + 1) % 5 == 0:
+        if (k + 1) % 10 == 0:
             wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div[1]/section/article/button'))).click()
 
             WebDriverWait(driver, 20).until(
@@ -171,14 +173,14 @@ for k in range(300):
     cnt += 1
     row += 1
 
-    if (k + 1) % 5 == 0:
+    if (k + 1) % 10 == 0:
         wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div[1]/section/article/button'))).click()
 
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[1]/section/article')))
 
 # 데이터 엑셀에 저장
-write_wb.save('중고나라_220313.xlsx')
+write_wb.save('중고나라_220315_1900.xlsx')
 
 # 브라우저 종료
 driver.quit()
