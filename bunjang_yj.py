@@ -80,7 +80,7 @@ def crawling_bunjang():
     count=0
     k=0
     while True:
-        if count >= 150:
+        if count >= 1000:
             break
         # 선택할 매물 경로 설정
         xpathhead = '//*[@class="sc-eopZyb cXHRlj"]/div['
@@ -93,9 +93,9 @@ def crawling_bunjang():
         flag = True
 
         # 현재 페이지 끝나면 다음 페이지로 이동
-        if count % 101 == 0:
+        if count % 100 == 1 and count > 100:
             page += 1
-            if page % 11 == 1:
+            if page % 10 == 1:
                 driver.find_element(By.XPATH, "//*[@class='sc-drlKqa zHqrz']/a[12]").click()
             else:
                 driver.find_element(By.XPATH, '//a[text()=' + str(page) + ']').click()
@@ -104,15 +104,16 @@ def crawling_bunjang():
             WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
             print("다음페이지로 이동!")
-            k = 1
+            k = 0
+            continue
 
         #지역
         try:
             region = driver.find_element(By.XPATH, xpath+'/div[3]').text
             region= region.split()[0]
             if '특별시' in region or '광역시' in region:
-                region = region.strip('특별시')
-                region = region.strip('광역시')
+                region = region.rstrip('특별시')
+                region = region.rstrip('광역시')
             elif '세종' in region:
                 region = '세종시'
             elif '충청남도' in region:
@@ -223,7 +224,7 @@ def crawling_bunjang():
                 condition=True
 
 
-        print(str(k) + " " + title + "/" + str(date) + "/" + device + "/" + memory + "/" +region)
+        print(str(count) + " " + title + "/" + str(date) + "/" + device + "/" + memory + "/" +region)
 
         write_ws.cell(row, 1, '번개장터')
         write_ws.cell(row, 2, '애플')
@@ -244,7 +245,7 @@ def crawling_bunjang():
     # driver.back()
     # driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
 
-    write_wb.save('번개장터_220313.xlsx')
+    write_wb.save('번개장터_220317.xlsx')
 
     # 브라우저 종료
     driver.quit()
