@@ -214,5 +214,3 @@ def crawling_daangn():
     # 브라우저 종료
     driver.quit()
 
-    # file= pd.read_excel('당근마켓_0313.xlsx')
-    # file.to_csv('당근마켓_0313.csv')
