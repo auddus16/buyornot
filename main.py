@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # df3 = pd.read_excel('중고나라_220313.xlsx')
     #
     # df = pd.concat([df1, df2, df3], ignore_index=True)
-    # df.to_csv("total_t1.csv", index=False)
+    # df.to_csv("total_t1.csv", index=False, encodings='utf-8')
 
 
 
