@@ -1,5 +1,4 @@
 import daangn_my as daangn
-import bunjang_yj as bunjang
 import pandas as pd
 
 if __name__ == "__main__":
