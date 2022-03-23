@@ -83,7 +83,8 @@ def crawling_bunjang():
         if count >= 1000:
             break
         # 선택할 매물 경로 설정
-        xpathhead = '//*[@class="sc-eopZyb cXHRlj"]/div['
+        # xpathhead = '//*[@class="sc-eopZyb cXHRlj"]/div['
+        xpathhead = '//*[@class="sc-eNNmBn iGLkQv"]/div['
         xpathmiddle = str(k + 1)
         xpathtail = ']/a'
         xpath = xpathhead + xpathmiddle + xpathtail
@@ -96,13 +97,13 @@ def crawling_bunjang():
         if count % 100 == 1 and count > 100:
             page += 1
             if page % 10 == 1:
-                driver.find_element(By.XPATH, "//*[@class='sc-drlKqa zHqrz']/a[12]").click()
+                driver.find_element(By.XPATH, "//*[@class='sc-bIqbHp hSvtQH']/a[12]").click()
             else:
                 driver.find_element(By.XPATH, '//a[text()=' + str(page) + ']').click()
             # wait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'more-btn'))).click()
             #
             WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eopZyb cXHRlj']")))
+                EC.presence_of_element_located((By.XPATH, "//*[@class='sc-eNNmBn iGLkQv']")))
             print("다음페이지로 이동!")
             k = 0
             continue
@@ -145,13 +146,13 @@ def crawling_bunjang():
 
         try:
             # 가져온 데이터를 각 변수에 저장
-            title = driver.find_element(By.XPATH,"//*[@class='sc-iFUGim igvOwa']").text  # 제목
+            title = driver.find_element(By.XPATH,"//*[@class='sc-cNQqM iWTxTj']").text  # 제목
 
-            content = driver.find_element(By.XPATH,"//*[@class='sc-dOkuiw bphZvH']").text  # 내용
+            content = driver.find_element(By.XPATH,"//*[@class='sc-jGFFOr kBEEWd']").text  # 내용
 
             # 날짜 계산
             current_time= dt.datetime.now().date()
-            date = driver.find_element(By.XPATH, "//*[@class='sc-cNnxps QBKRV']/div[3]").text  # 날짜
+            date = driver.find_element(By.XPATH, "//*[@class='sc-dPPMrM grqCCO']/div[3]").text  # 날짜
 
             if '초' in date:
                 t = int(date.rstrip('초 전'))
@@ -171,7 +172,7 @@ def crawling_bunjang():
                 date = current_time - dt.timedelta(days=t)
 
             # 가격
-            price = driver.find_element(By.XPATH, '//*[@class="sc-cNQqM hSmYTm"]/div[1]').text  # 가격
+            price = driver.find_element(By.XPATH, '//*[@class="sc-clBsIJ gKXeNp"]/div[1]').text  # 가격
             if price == '가격없음' or price == '나눔' or re.search('\d', price)==None:
                 price= 0
             else:
@@ -245,7 +246,7 @@ def crawling_bunjang():
     # driver.back()
     # driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
 
-    write_wb.save('번개장터_220321.xlsx')
+    write_wb.save('번개장터_220323.xlsx')
 
     # 브라우저 종료
     driver.quit()
