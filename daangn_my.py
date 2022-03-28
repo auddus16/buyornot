@@ -208,7 +208,7 @@ def crawling_daangn():
                 EC.presence_of_element_located((By.ID, 'flea-market-wrap')))
 
     # 데이터 엑셀에 저장
-    write_wb.save('당근마켓_220325_1400.xlsx')
+    write_wb.save('당근마켓_220328.xlsx')
 
 
     # 브라우저 종료
