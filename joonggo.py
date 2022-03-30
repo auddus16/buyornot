@@ -10,7 +10,6 @@ import datetime as dt
 import csv
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, UnexpectedAlertPresentException
-from sklearn.tree import DecisionTreeClassifier
 import time
 
 url = 'https://m.joongna.com/search-list/product?cafeOrder=1&searchword=%EC%95%84%EC%9D%B4%ED%8F%B0&rid=HHaSE16CXCtuqLt'
@@ -58,8 +57,8 @@ cnt = 0  # 매물 개수
 row = 2  # 엑셀 row
 
 
-for k in range(330):
-    time.sleep(1)
+for k in range(150):
+    # time.sleep(1)
     
 # 선택할 매물 경로 설정
     xpathhead = '//*[@class="SearchList_listWrap__14Cu9 pd_h20"]/div/div['
@@ -180,7 +179,7 @@ for k in range(330):
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[1]/section/article')))
 
 # 데이터 엑셀에 저장
-write_wb.save('중고나라_220315_1900.xlsx')
+write_wb.save('중고나라_220330_2.xlsx')
 
 # 브라우저 종료
 driver.quit()
