@@ -57,7 +57,7 @@ cnt = 0  # 매물 개수
 row = 2  # 엑셀 row
 
 
-for k in range(130):
+for k in range(150):
     # time.sleep(1)
     
 # 선택할 매물 경로 설정
@@ -179,7 +179,7 @@ for k in range(130):
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[1]/section/article')))
 
 # 데이터 엑셀에 저장
-write_wb.save('중고나라_220331_1.xlsx')
+write_wb.save('중고나라_220401_2.xlsx')
 
 # 브라우저 종료
 driver.quit()
