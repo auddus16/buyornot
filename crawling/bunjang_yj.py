@@ -246,7 +246,7 @@ def crawling_bunjang():
     # driver.back()
     # driver.find_element(By.XPATH,"//*[@class='sc-hMqMXs cLfdog']").clear()   #검색창 비우기
 
-    write_wb.save('번개장터_220330_1830.xlsx')
+    write_wb.save('번개장터_220404_1130.xlsx')
 
     # 브라우저 종료
     driver.quit()
