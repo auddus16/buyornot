@@ -4,19 +4,29 @@
     font-weight: normal;
     font-style: normal;
 }
+
+.apple{
+    display: none;  
+} 
 *{
     font-family: 'GangwonEdu_OTFBoldA';
 }
+p{
+    font-size:17px;
+    font-style: italic;
+    
+    
+}
 body{
-    background-color:#f6f8fa;
+    background-color:hwb(0 98% 2% / 0.319);
 }
 .container-fluid{
-    
     padding: 10px;
     background-color:hsl(240, 3%, 87%) ;
 }
 .navbar-brand{
-    font-size: 50px;
+    margin-top:10px;
+    font-size: 45px;
     font-weight: bolder;
     margin-left: 20px;
     margin-right: 100px;
@@ -36,23 +46,32 @@ body{
     margin-left: 50px;
 }
 h3{
-    margin-top: 100px;
+   /*  margin-top: 100px; */
     text-align: center;
     font-size: 27px;
     background-color: blanchedalmond;
     
 }
+/* .main-title{
+    display:inline-block;
+    border-radius: 15px 15px 15px 15px; 
+    border: 3px solid hsla(30, 90%, 69%, 0.486); 
+    padding: 0.5em 0.6em; 
+    color: #000000;
+} */
 .mid_title{
-    margin-top: 100px;
-    text-align: left;
-    font-size:27px;
-    background-color: #a1e1fb;
+    display:inline-block;
+    text-align: center;
+    border-bottom: 5px solid #a1e1fb;
+    /* padding: 0.3em 1em; */
+    border-radius: 2px;
+    font-size:25px;
+
 }
-.com1 ,.com2, .com3 {
-    
+.com1 {
     border-style: solid;
     border-width: 5px;
-    border-color: rgba(116, 179, 221, 0.274);
+    border-color: hsla(205, 88%, 20%, 0.863);
     padding: 50px;
     border-radius: 90px 90px 90px 90px;
     margin-bottom: 20px;
