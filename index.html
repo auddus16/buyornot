@@ -11,33 +11,38 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          
-            <a class="logo" href="#">
+    <nav class="navbar-light bg-light">
+          <div class="container"></div>
+            <!-- <a class="logo" href="#">
                 <img src="logo.png" alt="" width="150" height="120" class="d-inline-block align-text-top">
-            </a>
-          <a class="navbar-brand" href="#" onclick="location.href='index.html'">살까 말까<br><p>중고거래 시세 측정 서비스</p></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            </a> -->
+         <!--  <a class="navbar-brand" href="#" onclick="location.href='index.html'">살까 말까<br><p>중고거래 시세 측정 서비스</p></a> -->
+          <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+          </button> -->
+          <!-- <div class="collapse navbar-collapse" id="navbarNav"> 잠깐 삭제 -->
+            <div class="high_bar">
+            <div>
+            <a class="navbar-brand" href="#" onclick="location.href='index.html'">살까 말까<br><p>중고거래 가격 비교 서비스</p></a>
+            </div>
+            <div>
+            <ul class="nav justify-content-center">
               <li class="nav-item">
                 <a class="nav-link "href="#" onclick ='Apple();'>APPLE</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">SAMSUNG</a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="#">개봉/미개봉</a>
-              </li>
+              </li>  -->
               <li class="nav-item">
-                <a class="nav-link" href="#">지역별</a>
+                <a class="nav-link" href="#" onclick ='Region();''>지역별</a>
               </li>
             </ul>
-          </div>
+            </div>
         </div>
+      </div>
     </nav>
       
     <section class="main">
@@ -60,6 +65,16 @@
           </div>
        </div>
     </section>
+    <section class="region">
+      <div class="position-relative overflow-hidden text-center">
+        <div class=" p-lg-3 mx-1 my-5">    
+            <h4 class="mid_title">지역 별 가격을 한 눈에 ! </h4>
+              <div class = "com1" style = "margin : 50px 50px;" >
+                <iframe src="https://buyornot.kb.ap-northeast-2.aws.elastic-cloud.com:9243/goto/c930e320-b725-11ec-b20f-490343e65844?auth_provider_hint=anonymous1" height="500" width="100%"></iframe>
+               </div>
+         </div>
+      </div>
+   </section>
     
     <footer class="py-5 bg-dark">
         <div class="container">
@@ -77,6 +92,10 @@
       function Apple(){   
         $(".main").hide() 
         $(".apple").show()
+      }
+      function Region(){
+        $(".main").hide() 
+        $(".region").show()
       } 
      </script>
 
