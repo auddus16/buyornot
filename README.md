@@ -1,5 +1,5 @@
 # 살까말까(buyornot)
-2022 상명대학교 Elastic Training Program Team Project
+2022 Elastic Training Program Team Project
 ### 중고거래 가격 비교 서비스
 중고거래 플랫폼 "중고나라, 번개장터, 당근마켓"에서 Crawling하여 데이터 수집 후 Elasticsearch를 활용하여 판매자와 구매자에게 중고거래 가격 비교 서비스를 제공한다. 
 ![image](https://user-images.githubusercontent.com/59945024/187596643-81f00b39-d1d4-46de-be1a-13c607655f1c.png)
